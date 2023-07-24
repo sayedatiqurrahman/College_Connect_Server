@@ -68,6 +68,7 @@ async function run() {
         })
 
         app.get("/research-paper", async (req, res) => {
+
             const result = await ResearchCollections.find({}).toArray()
             res.send(result)
         })
