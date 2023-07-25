@@ -80,7 +80,12 @@ async function run() {
                 const query2 = { _id: new ObjectId(appliedCollege) }
                 const result = await collegeCollections.findOne(query2)
                 // console.log(result);
-                res.send(result)
+                const combineData = {
+                    collegeData: result,
+                    appliedData: data
+                }
+
+                res.send(combineData)
             }
 
 
