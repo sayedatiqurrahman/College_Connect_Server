@@ -9,8 +9,8 @@ const port = process.env.port || 5000
 app.use(cors())
 app.use(express.json());
 
-// const uri = "mongodb+srv://college-connect:sfKxgg5VabyBDTT4@atiqurrahman.ac8ixft.mongodb.net/?retryWrites=true&w=majority";
-const uri = "mongodb://127.0.0.1:27017";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atiqurrahman.ac8ixft.mongodb.net/?retryWrites=true&w=majority`;
+// const uri = "mongodb://127.0.0.1:27017";
 
 
 
@@ -75,7 +75,7 @@ async function run() {
             const { email } = req.query;
             const query = { email: email }
             const data = await applyCollection.findOne(query)
-            const appliedCollege = data.applied_id
+            const appliedCollege = data?.applied_id
             if (appliedCollege) {
                 const query2 = { _id: new ObjectId(appliedCollege) }
                 const result = await collegeCollections.findOne(query2)
@@ -115,9 +115,18 @@ async function run() {
             }
         })
 
+        // feedback
+        app.patch("/testimonial", async (req, res) => {
+            const { testimonial, email, name } = req.body;
+            console.log(testimonial, email, name);
+            if (testimonial && email && name) {
+                const result = await TestimonialCollections.updateOne({ email }, { $set: { name, email, testimonial } }, { upsert: true })
+                res.send(result)
+            }
+        })
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
 
     }
