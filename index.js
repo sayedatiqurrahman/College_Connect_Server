@@ -7,7 +7,7 @@ const app = express()
 const port = process.env.port || 5000
 // middleware
 app.use(cors())
-app.use(express())
+app.use(express.json());
 
 
 
@@ -34,7 +34,7 @@ async function run() {
         const collegeCollections = client.db("college-connect").collection("colleges");
         const TestimonialCollections = client.db("college-connect").collection("Testimonial");
         const ResearchCollections = client.db("college-connect").collection("Research");
-
+        const applyCollection = client.db("college-connect").collection("apply")
 
         // routes
         app.get("/", async (req, res) => {
@@ -72,6 +72,28 @@ async function run() {
             const result = await ResearchCollections.find({}).toArray()
             res.send(result)
         })
+        // Admission Apply
+        app.get("/apply", async (req, res) => {
+
+
+            res.send("I am Here")
+
+
+        });
+        app.post("/apply", async (req, res) => {
+            try {
+                const newData = req.body;
+                console.log(newData);
+
+
+                // Insert the newData object with the new _id field
+                const result = await applyCollection.insertOne(newData);
+                res.send(result);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'An internal server error occurred.' });
+            }
+        });
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
