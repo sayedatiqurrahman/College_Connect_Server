@@ -74,9 +74,17 @@ async function run() {
         })
         // Admission Apply
         app.get("/apply", async (req, res) => {
+            const { email } = req.query;
+            const query = { email: email }
+            const data = await applyCollection.findOne(query)
+            const appliedCollege = data.applied_id
+            if (appliedCollege) {
+                const query2 = { _id: new ObjectId(appliedCollege) }
+                const result = await collegeCollections.findOne(query2)
+                console.log(result);
+                res.send(result)
+            }
 
-
-            res.send("I am Here")
 
 
         });
