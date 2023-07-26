@@ -9,8 +9,8 @@ const port = process.env.port || 5000
 app.use(cors())
 app.use(express.json());
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atiqurrahman.ac8ixft.mongodb.net/?retryWrites=true&w=majority`;
-const uri = "mongodb://127.0.0.1:27017";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atiqurrahman.ac8ixft.mongodb.net/?retryWrites=true&w=majority`;
+// const uri = "mongodb://127.0.0.1:27017";
 
 
 
