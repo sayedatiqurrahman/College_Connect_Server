@@ -91,15 +91,19 @@ async function run() {
 
 
         });
-        app.post("/apply", async (req, res) => {
+        app.patch("/apply", async (req, res) => {
             try {
                 const newData = req.body;
                 // console.log(newData);
+                if (newData) {
+                    const { subject, college_name, mobile_number, date_of_birth, email, name, image, applied_id } = newData
+
+                    // Insert the newData object with the new _id field
+                    const result = await applyCollection.updateOne({ email }, { $set: { subject, college_name, mobile_number, date_of_birth, email, name, image, applied_id } }, { upsert: true });
+                    res.send(result);
+                }
 
 
-                // Insert the newData object with the new _id field
-                const result = await applyCollection.insertOne(newData);
-                res.send(result);
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ error: 'An internal server error occurred.' });
