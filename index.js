@@ -9,8 +9,8 @@ const port = process.env.port || 5000
 app.use(cors())
 app.use(express.json());
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atiqurrahman.ac8ixft.mongodb.net/?retryWrites=true&w=majority`;
-// const uri = "mongodb://127.0.0.1:27017";
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atiqurrahman.ac8ixft.mongodb.net/?retryWrites=true&w=majority`;
+const uri = "mongodb://127.0.0.1:27017";
 
 
 
@@ -128,6 +128,18 @@ async function run() {
                 res.send(result)
             }
         })
+        // update info
+        app.patch("/updateData", async (req, res) => {
+            const updateData = req.body;
+            if (updateData) {
+                const { mobile_number, date_of_birth, email, name, image } = updateData
+
+                // Insert the newData object with the new _id field
+                const result = await applyCollection.updateOne({ email }, { $set: { mobile_number, date_of_birth, email, name, image } }, { upsert: true });
+                res.send(result);
+            }
+        }
+        )
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
